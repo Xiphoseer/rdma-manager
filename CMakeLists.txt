@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.9)
 
 project(rdma)
 
-
 # ---------------------------------------------------------------------------------------------------------------------
 # --- [ SETTINGS ] ----------------------------------------------------------------------------------------------------
 
@@ -18,7 +17,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLINUX -std=c++17 -Wall -Wextra -DHUGEP
 option(CUDA_SUPPORTED "CUDA enabled" ON)
 
 # Path where the CMake modules are located to find all required libraries 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
 # Path where the binaries should be compiled into
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
