@@ -32,7 +32,7 @@ bool ProtoServer::startServer() {
   stringstream ss;
   while (!m_running) {
     if (killed()) {
-      ss << m_name << " starting failed  \n";
+      ss << m_name << " starting failed";
       Logging::error(__FILE__, __LINE__, ss.str());
       return false;
     }
