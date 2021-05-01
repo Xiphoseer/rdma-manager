@@ -40,6 +40,7 @@ uint32_t Config::RDMA_UD_MTU = 4096;
 
 std::string Config::SEQUENCER_IP = "192.168.94.21"; //node02
 uint16_t Config::SEQUENCER_PORT = 5600;
+uint32_t Config::RDMA_GET_NODE_ID_RETRIES = 5; // 50
 
 std::string Config::RDMA_INTERFACE = "ib1";
 
@@ -156,16 +157,18 @@ void Config::set(string key, string value) {
     Config::RDMA_NUMAREGION = stoi(value);
   } else if (key.compare("RDMA_IBPORT") == 0) {
     Config::RDMA_IBPORT = stoi(value);
-  }else if (key.compare("LOGGING_LEVEL") == 0) {
+  } else if (key.compare("LOGGING_LEVEL") == 0) {
     Config::LOGGING_LEVEL = stoi(value);
-  }else if (key.compare("MLX5_SINGLE_THREADED") == 0) {
+  } else if (key.compare("MLX5_SINGLE_THREADED") == 0) {
     Config::MLX5_SINGLE_THREADED = stoi(value);
-  }else if (key.compare("RDMA_INTERFACE") == 0) {
+  } else if (key.compare("RDMA_INTERFACE") == 0) {
     Config::RDMA_INTERFACE = value;
-  }else if (key.compare("NODE_SEQUENCER_IP") == 0) {
+  } else if (key.compare("NODE_SEQUENCER_IP") == 0) {
     Config::SEQUENCER_IP = value;
-  }else if (key.compare("NODE_SEQUENCER_PORT") == 0) {
+  } else if (key.compare("NODE_SEQUENCER_PORT") == 0) {
     Config::SEQUENCER_PORT = stoi(value);
+  } else if (key.compare("RDMA_GET_NODE_ID_RETRIES") == 0) {
+    Config::RDMA_GET_NODE_ID_RETRIES = stoi(value);
   } else {
     std::cerr << "Config: UNKNOWN key '" << key << "' = '" << value << "'" << std::endl;
   }
