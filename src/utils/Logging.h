@@ -75,4 +75,11 @@ class Logging {
 
 }  // end namespace rdma
 
+#undef ESC_NORMAL
+#undef ESC_DIM
+#undef ESC_UNSET
+#undef ESC_RED
+#undef ESC_BLUE
+#undef ESC_YELLOW
+
 #endif /* LOGGING_HPP_ */
