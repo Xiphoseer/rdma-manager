@@ -38,7 +38,7 @@ SUBDIRLIST(SUBDIRS ".")
 	endforeach()
   
   file(GLOB test_SRC ./*/*.cc)
-  message(${test_SRC})
+  #message(${test_SRC})
 
   add_executable(runUnitTests ${test_SRC})
   # Standard linking to gtest stuff.
