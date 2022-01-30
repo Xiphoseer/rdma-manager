@@ -22,6 +22,7 @@ rdma_mem_t BaseMemory::s_nillmem;
 
 // constructor
 BaseMemory::BaseMemory(bool register_ibv, size_t mem_size, int numa_node, int ib_port) : AbstractBaseMemory(mem_size){
+    this->mr = nullptr; // initialize!
     this->m_ibv = register_ibv;
     this->ib_port = ib_port;
     this->numa_node = numa_node;
