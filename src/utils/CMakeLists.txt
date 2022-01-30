@@ -3,6 +3,7 @@ set(RDMA_UTILS_SRC
   Filehelper.h
   Config.h
   Logging.h
+  Logging.cc
   Config.cc
   Timer.h
   Network.h
