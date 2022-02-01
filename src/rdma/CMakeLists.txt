@@ -29,3 +29,6 @@ target_link_libraries(rdma_lib
 )
 
 set_target_properties(rdma_lib PROPERTIES OUTPUT_NAME "rdma-manager")
+
+install(TARGETS rdma_lib
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
