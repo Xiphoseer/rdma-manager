@@ -17,3 +17,5 @@ target_link_libraries(rdma_proto
   thread
   ${ZMQ_LIBRARIES}
   )
+
+install(TARGETS rdma_proto ARCHIVE DESTINATION lib)

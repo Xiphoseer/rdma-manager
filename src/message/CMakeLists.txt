@@ -20,3 +20,5 @@ set_target_properties(net_message PROPERTIES OUTPUT_NAME "rdma-manager-message")
 target_link_libraries(net_message
   ${PROTOBUF_LIBRARIES}
 )
+
+install(TARGETS net_message ARCHIVE DESTINATION lib)

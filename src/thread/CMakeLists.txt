@@ -14,6 +14,4 @@ target_link_libraries(thread
   rdma_utils
   )
 
-
-
-
+install(TARGETS thread ARCHIVE DESTINATION lib)

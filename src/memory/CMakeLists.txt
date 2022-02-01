@@ -33,3 +33,4 @@ find_package(Numa)
 target_link_libraries(rdma_memory_lib ${NUMA_LIBRARY})
 
 # target_link_libraries(rdma_memory_lib ${RDMA_LINKER_FLAGS})
+install(TARGETS rdma_memory_lib ARCHIVE DESTINATION lib)

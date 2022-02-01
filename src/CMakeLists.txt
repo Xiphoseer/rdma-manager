@@ -14,11 +14,3 @@ file(COPY
     ${CMAKE_CURRENT_SOURCE_DIR}/conf/RDMA.conf
     DESTINATION ${CMAKE_BINARY_DIR}/bin/conf/
 )
-
-install(TARGETS
-rdma_proto
-rdma_lib
-rdma_memory_lib
-net_message
-thread
-)
