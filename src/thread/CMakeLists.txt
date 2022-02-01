@@ -8,6 +8,7 @@ set(THREAD_SRCS
 
 add_library(thread ${THREAD_SRCS})
 target_include_directories(thread PUBLIC ${CMAKE_CURRENT_BINARY_PATH})
+set_target_properties(thread PROPERTIES OUTPUT_NAME "rdma-manager-thread")
 target_link_libraries(thread
   ${CMAKE_THREAD_LIBS_INIT}
   rdma_utils

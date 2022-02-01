@@ -16,6 +16,7 @@ set(PROTO_SRC ${PROTO_SRC} CACHE INTERNAL "Generated protobuf source files")
 
 add_library(net_message ${NET_MESSAGE_SRC} ${PROTO_SRC} ${PROTO_HDRS})
 target_include_directories(net_message PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+set_target_properties(net_message PROPERTIES OUTPUT_NAME "rdma-manager-message")
 target_link_libraries(net_message
   ${PROTOBUF_LIBRARIES}
 )

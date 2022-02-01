@@ -27,3 +27,5 @@ target_link_libraries(rdma_lib
   net_message
   rdma_proto
 )
+
+set_target_properties(rdma_lib PROPERTIES OUTPUT_NAME "rdma-manager")

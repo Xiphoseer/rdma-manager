@@ -17,4 +17,9 @@ find_package(Numa)
 target_link_libraries(rdma_utils ${NUMA_LIBRARY})
 
 target_include_directories(rdma_utils PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+set_target_properties(rdma_utils PROPERTIES OUTPUT_NAME "rdma-manager-utils")
 target_link_libraries(rdma_utils rdma_proto)
+
+install(TARGETS rdma_utils
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
