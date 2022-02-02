@@ -21,7 +21,15 @@ Thread::~Thread() {
 }
 
 void Thread::start(int threadid) {
-  m_thread = new thread(Thread::execute, this, threadid);
+  try {
+    m_thread = new thread(Thread::execute, this, threadid);
+  } catch(std::system_error e) {
+    std::stringstream msg;
+    msg << "Failed to launch thread" << threadid << std::endl;
+    msg << "\twhat()=" << e.what() << std::endl;
+    msg << "\tcode()=" << e.code();
+    throw std::runtime_error(msg.str());
+  }
 }
 
 void Thread::join() {
