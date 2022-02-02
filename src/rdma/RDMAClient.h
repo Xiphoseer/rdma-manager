@@ -384,7 +384,10 @@ namespace rdma
     // Can be overwritten for special use-cases where NodeIDSequencer is insufficient
     virtual NodeID requestNodeID(std::string sequencerIpPort, std::string ownIpPort, NodeType::Enum nodeType)
     {
-      // std::cout << "Requesting IP. sequencerIpPort" << sequencerIpPort << " ownIpPort " << ownIpPort << std::endl;
+      std::stringstream note;
+      note <<  "Requesting IP. sequencerIpPort" << sequencerIpPort << " ownIpPort " << ownIpPort;
+      Logging::info(note.str());
+
       // check if client is connected to sequencer
       if (ProtoClient::isConnected(sequencerIpPort))
       {
