@@ -114,8 +114,8 @@ class RDMAServer : public ProtoServer, public RDMAClient<RDMA_API_T> {
       try {
         // std::cout << "RDMAServer requesting nodeid!" << std::endl;
         RDMAClient<RDMA_API_T>::m_ownNodeID = RDMAClient<RDMA_API_T>::requestNodeID(RDMAClient<RDMA_API_T>::m_sequencerIpPort, RDMAClient<RDMA_API_T>::m_ownIpPort, RDMAClient<RDMA_API_T>::m_nodeType);
-      } catch (std::runtime_error e) {
-        Logging::error(__FILE__, __LINE__, "RDMAServer: failed to request node id");
+      } catch (std::runtime_error& e) {
+        Logging::error(__FILE__, __LINE__, e.what());
         return false;
       }
     }
@@ -126,8 +126,9 @@ class RDMAServer : public ProtoServer, public RDMAClient<RDMA_API_T> {
     // start data node server
     bool status;
     try {
-      status = ProtoServer::startServer()
-    } catch (std::runtime_error) {
+      status = ProtoServer::startServer();
+    } catch (std::runtime_error& e) {
+      Logging::error(__FILE__, __LINE__, e.what());
       status = false;
     }
     if (!status) {
