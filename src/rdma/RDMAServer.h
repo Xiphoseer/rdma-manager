@@ -111,15 +111,26 @@ class RDMAServer : public ProtoServer, public RDMAClient<RDMA_API_T> {
       ProtoClient::setSendTimeout(Config::PROTO_SEND_TIMEOUT);
       ProtoClient::setRecvTimeout(Config::PROTO_RECV_TIMEOUT);
 
-      // std::cout << "RDMAServer requesting nodeid!" << std::endl;
-      RDMAClient<RDMA_API_T>::m_ownNodeID = RDMAClient<RDMA_API_T>::requestNodeID(RDMAClient<RDMA_API_T>::m_sequencerIpPort, RDMAClient<RDMA_API_T>::m_ownIpPort, RDMAClient<RDMA_API_T>::m_nodeType);
+      try {
+        // std::cout << "RDMAServer requesting nodeid!" << std::endl;
+        RDMAClient<RDMA_API_T>::m_ownNodeID = RDMAClient<RDMA_API_T>::requestNodeID(RDMAClient<RDMA_API_T>::m_sequencerIpPort, RDMAClient<RDMA_API_T>::m_ownIpPort, RDMAClient<RDMA_API_T>::m_nodeType);
+      } catch (std::runtime_error e) {
+        Logging::error(__FILE__, __LINE__, "RDMAServer: failed to request node id");
+        return false;
+      }
     }
     if (ProtoServer::isRunning()) { 
       // std::cout << "RDMAServer is running!!!" << std::endl;
       return true;
     }
     // start data node server
-    if (!ProtoServer::startServer()) {
+    bool status;
+    try {
+      status = ProtoServer::startServer()
+    } catch (std::runtime_error) {
+      status = false;
+    }
+    if (!status) {
       Logging::error(__FILE__, __LINE__, "RDMAServer: could not be started");
       return false;
     }
