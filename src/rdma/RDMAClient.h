@@ -389,37 +389,73 @@ namespace rdma
       Logging::info(note.str());
 
       // check if client is connected to sequencer
-      if (ProtoClient::isConnected(sequencerIpPort))
+      try
       {
-        return m_ownNodeID;
+        if (ProtoClient::isConnected(sequencerIpPort)) return m_ownNodeID;
+      }
+      catch (std::runtime_error& e)
+      {
+        auto msg = std::string("RDMAClient: Failed to check connection: ") + e.what();
+        Logging::error(__FILE__, __LINE__, msg);
+        throw std::runtime_error(msg);
       }
 
       try
       {
+        Logging::info("Connecting");
         ProtoClient::connectProto(sequencerIpPort);
       }
       catch (std::runtime_error &e)
       {
-        Logging::error(__FILE__, __LINE__, "RDMAClient: Failed to connect to sequencer");
-        throw e;
+        auto msg = std::string("RDMAClient: Failed to connect to sequencer: ") + e.what();
+        Logging::error(__FILE__, __LINE__, msg);
+        throw std::runtime_error(msg);
       }
 
-      Any nodeIDRequest = ProtoMessageFactory::createNodeIDRequest(ownIpPort, m_name, nodeType);
+      Any nodeIDRequest;
+      try
+      {
+        nodeIDRequest = ProtoMessageFactory::createNodeIDRequest(ownIpPort, m_name, nodeType);
+      }
+      catch (std::runtime_error& e) {
+        auto msg = std::string("RDMAClient: Failed to create node ID request: ") + e.what();
+        Logging::error(__FILE__, __LINE__, msg);
+        throw std::runtime_error(msg);
+      }
+      
       Any rcvAny;
-      Logging::info("Sending nodeid request to NodeIDSequencer");
-      ProtoClient::exchangeProtoMsg(sequencerIpPort, &nodeIDRequest, &rcvAny);
-
-      if (rcvAny.Is<NodeIDResponse>())
+      try
       {
-        NodeIDResponse connResponse;
-        rcvAny.UnpackTo(&connResponse);
-        return connResponse.nodeid();
+        Logging::info("Sending nodeid request to NodeIDSequencer");
+        ProtoClient::exchangeProtoMsg(sequencerIpPort, &nodeIDRequest, &rcvAny);
       }
-      else
+      catch (std::runtime_error& err)
       {
-        Logging::error(__FILE__, __LINE__,
-                       "RDMAClient could not request NodeID from NodeIDSequencer: received wrong response type");
-        throw std::runtime_error("RDMAClient could not request NodeID from NodeIDSequencer: received wrong response type");
+        auto msg = std::string("RDMAClient: Failed to exchange proto message: ") + err.what();
+        Logging::error(__FILE__, __LINE__, msg);
+        throw std::runtime_error(msg);
+      }
+
+      try
+      {
+        if (rcvAny.Is<NodeIDResponse>())
+        {
+          NodeIDResponse connResponse;
+          rcvAny.UnpackTo(&connResponse);
+          return connResponse.nodeid();
+        }
+        else
+        {
+          Logging::error(__FILE__, __LINE__,
+                        "RDMAClient could not request NodeID from NodeIDSequencer: received wrong response type");
+          throw std::runtime_error("RDMAClient could not request NodeID from NodeIDSequencer: received wrong response type");
+        }
+      }
+      catch (std::runtime_error& err)
+      {
+        auto msg = std::string("RDMAClient: Failed to unpack proto message: ") + err.what();
+        Logging::error(__FILE__, __LINE__, msg);
+        throw std::runtime_error(msg);
       }
     }
 
